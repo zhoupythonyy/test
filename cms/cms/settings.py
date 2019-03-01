@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'django_filters',
     'users',
     'areas',
     'goods',
@@ -183,7 +184,9 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
         'rest_framework.authentication.SessionAuthentication',			 # 管理后台使用
         'rest_framework.authentication.BasicAuthentication',
+
     ),
+
 }
 
 # jwt认证配置

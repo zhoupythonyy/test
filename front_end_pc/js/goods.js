@@ -14,15 +14,26 @@ var vm = new Vue({
 		//获取推荐商品
         get_recommend_goods: function () {
            //发送请求
+            axios.get('http://127.0.0.1:8000/goods/recommend/')
+                .then(response => {
+                    this.recommend_goods = response.data;
                 })
-        },
+                .catch(error =>{
+                    console.log(error)
+                })
+                },
 		//获取分类商品
         get_category_goods: function () {
            //发送请求
+            axios.get('http://127.0.0.1:8000/goods/categories/')
+                .then(response => {
+                    this.categories = response.data;
                 })
-        },
+                .catch(error =>{
+                    console.log(error)
+                })
+                },
     },
-
     filters: {
         formatDate: function (time) {
             return dateFormat(time, "yyyy-mm-dd");
