@@ -40,6 +40,21 @@ var vm = new Vue({
             } else {
                 this.error_name = false;
             }
+            // 检查重名
+            axios.get('http://127.0.0.1:8000/users/names/' + this.username + '/count/', {
+                    responseType: 'json'
+                })
+                .then(response => {
+                    if (response.data.count > 0) {
+                        this.error_name_message = '用户名已存在';
+                        this.error_name = true;
+                    } else {
+                        this.error_name = false;
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                })
         },
 
         check_pwd: function () {
@@ -91,8 +106,16 @@ var vm = new Vue({
 
             if (!this.error_phone) {
 				//发送获取请求
-				
-            }
+				axios.get('http://127.0.0.1:8000/users/sms_codes/'+ this.mobile +'/')
+                    .then(response => {
+                        console.log('获取短信验证码成功')
+                    })
+                    .catch(error => {
+                        // 显示出错信息
+                        this.error_sms_code = true;
+                        this.error_sms_code_message = error.response.data.message;
+                    })
+                        }
         },
 
         // 点击注册按钮
