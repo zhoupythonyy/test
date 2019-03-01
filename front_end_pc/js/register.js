@@ -145,6 +145,13 @@ var vm = new Vue({
                 axios.post('http://127.0.0.1:8000/users/register/', data)
                     .then(response => {
                         alert("注册成功");
+                         // 清除之前保存的数据
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        // 保存用户的登录状态数据
+                        localStorage.token = response.data.token;
+                        localStorage.username = response.data.username;
+                        localStorage.user_id = response.data.id;
                         location.href = '/index.html';      // 跳转到首页
                     })
                     .catch(error => {
