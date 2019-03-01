@@ -30,7 +30,13 @@ var vm = new Vue({
 
     mounted: function () {
         // 获取所有的省份,发送请求
-		
+        axios.get('http://127.0.0.1:8000/areas/')
+            .then(response => {
+                this.provinces = response.data;
+            })
+            .catch(error => {
+                alert(error.response.data);
+            });
         
     },
 
@@ -39,6 +45,14 @@ var vm = new Vue({
         'form_address.province_id': function () {
             if (this.form_address.province_id) {
                 //发送请求
+                 axios.get('http://127.0.0.1:8000/areas/' + this.form_address.province_id + '/')
+                    .then(response => {
+                        this.cities = response.data.subs;
+                    })
+                    .catch(error => {
+                        console.log(error.response.data);
+                        this.cities = [];
+                    });
             }
         },
 
@@ -46,6 +60,14 @@ var vm = new Vue({
         'form_address.city_id': function () {
             if (this.form_address.city_id) {
                //发送请求
+                 axios.get('http://127.0.0.1:8000/areas/' + this.form_address.city_id + '/')
+                    .then(response => {
+                        this.districts = response.data.subs;
+                    })
+                    .catch(error => {
+                        console.log(error.response.data);
+                        this.districts = [];
+                    });
             }
         }
     },
