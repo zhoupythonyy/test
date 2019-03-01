@@ -108,6 +108,7 @@ var vm = new Vue({
 				//发送获取请求
 				axios.get('http://127.0.0.1:8000/users/sms_codes/'+ this.mobile +'/')
                     .then(response => {
+                        alert('获取短信验证码成功');
                         console.log('获取短信验证码成功')
                     })
                     .catch(error => {
@@ -133,6 +134,32 @@ var vm = new Vue({
                 && this.error_phone === false
                 && this.error_allow === false) {
 				//发送注册请求
+                var data = {
+                    username: this.username,
+                    password: this.password,
+                    password2: this.password2,
+                    mobile: this.mobile,
+                    sms_code: this.sms_code,
+                    allow: this.allow
+                };
+                axios.post('http://127.0.0.1:8000/users/register/', data)
+                    .then(response => {
+                        alert("注册成功");
+                        location.href = '/index.html';      // 跳转到首页
+                    })
+                    .catch(error => {
+                        if (error.response.status === 400) {
+                            if ('non_field_errors' in error.response.data) {
+                                this.error_sms_code = true;
+                                this.error_sms_code_message = error.response
+                                    .data.non_field_errors[0];
+                            } else {
+                                alert('注册失败')
+                            }
+                        } else {
+                            alert('注册失败')
+                        }
+                    })
             } else {
                 alert('填写有误')
             }

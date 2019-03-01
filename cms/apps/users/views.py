@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django_redis import get_redis_connection
 from rest_framework.exceptions import ValidationError
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users import serializers
 from users.models import User
 
 
@@ -41,3 +43,8 @@ class SMSCodeView(APIView):
         strict_redis.setex('send_flag_%s' % mobile, 60, 1)  # 1分钟过期
 
         return Response({'message': 'ok'})
+
+
+class UserView(CreateAPIView):
+    """用户注册"""
+    serializer_class = serializers.CreateUserSerializer
