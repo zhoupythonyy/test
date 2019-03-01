@@ -132,7 +132,20 @@ var vm = new Vue({
             } else {
                 this.form_address.title = this.form_address.receiver;
                 // 新增地址,发送请求
-                
+                axios.post('http://127.0.0.1:8000/users/addresses/', this.form_address, {
+                    headers: {
+                        'Authorization': 'JWT ' + this.token
+                    }
+                })
+                .then(response => {
+                    // 将新地址添加到数组的头部（作为第一个元素）
+                    this.addresses.splice(0, 0, response.data);
+                    alert("保存地址成功");
+                    location.reload()
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                })
             }
         },
     }

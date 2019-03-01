@@ -11,6 +11,23 @@ var vm = new Vue({
 
     mounted: function(){
         // 请求当前登录用户的所有的地址
+         axios.get('http://127.0.0.1:8000/users/addresses/', {
+                headers: {
+                    'Authorization': 'JWT ' + this.token
+                }
+            })
+            .then(response => {
+                this.addresses = response.data;
+                // this.default_address_id = response.data.default_address_id;
+            })
+            .catch(error => {
+                status = error.response.status;
+                if (status == 401 || status == 403) {
+                    location.href = '/login.html?next=/user_center_site.html';
+                } else {
+                    alert(error.response.data);
+                }
+            })
        
     },
 
