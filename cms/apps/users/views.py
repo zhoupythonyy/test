@@ -52,7 +52,7 @@ class UserView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
 
 
-class AddressView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin,
+class AddressView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin,mixins.UpdateModelMixin,
                   GenericViewSet):
     """用户地址管理"""
     serializer_class = serializers.UserAddressSerializer
@@ -61,3 +61,21 @@ class AddressView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Destroy
     def get_queryset(self):
         """获取当前用户地址"""
         return self.request.user.addresses.filter(is_deleted=False)
+
+    def list(self, request, *args, **kwargs):
+        """ 用户地址列表数据 """
+        # 当前登录用户的所有地址
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'user_id': request.user.id,
+            'default_address_id': request.user.default_address_id,
+            'addresses': serializer.data
+            })
+
+    def update(self, request, *args, **kwargs):
+        """设置默认地址"""
+        address = self.get_object()
+        address.user.default_address_id = address.id
+        address.user.save()
+        return Response(self.get_serializer(address).data)

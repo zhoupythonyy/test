@@ -17,8 +17,9 @@ var vm = new Vue({
                 }
             })
             .then(response => {
-                this.addresses = response.data;
+                this.addresses = response.data.addresses;
                 this.default_address_id = response.data.default_address_id;
+                this.user_id = response.data.user_id;
             })
             .catch(error => {
                 status = error.response.status;
@@ -39,7 +40,7 @@ var vm = new Vue({
                 return
             }
 			//发送请求
-            axios.put('http://127.0.0.1:8000/users/addresses/' + this.default_address_id + '/',  {
+            axios.put('http://127.0.0.1:8000/users/addresses/' + this.default_address_id + '/',  null, {
                 headers: {
                     'Authorization': 'JWT ' + this.token
                 }
