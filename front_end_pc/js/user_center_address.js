@@ -18,7 +18,7 @@ var vm = new Vue({
             })
             .then(response => {
                 this.addresses = response.data;
-                // this.default_address_id = response.data.default_address_id;
+                this.default_address_id = response.data.default_address_id;
             })
             .catch(error => {
                 status = error.response.status;
@@ -39,12 +39,35 @@ var vm = new Vue({
                 return
             }
 			//发送请求
-           
+            axios.put('http://127.0.0.1:8000/users/addresses/' + this.default_address_id + '/',  {
+                headers: {
+                    'Authorization': 'JWT ' + this.token
+                }
+            })
+                .then(response =>{
+                    alert('设置默认地址成功');
+                    location.reload()
+                })
+                .catch(error =>{
+                    alert('设置默认地址失败')
+                })
         },
 
         // 删除地址
         delete_address: function (address_id) {
             // 发送请求
+            axios.delete('http://127.0.0.1:8000/users/addresses/' + address_id + '/',  {
+                headers: {
+                    'Authorization': 'JWT ' + this.token
+                }
+            })
+                .then(response =>{
+                    alert('删除地址成功');
+                    location.reload()
+                })
+                .catch(error =>{
+                    alert(error)
+                })
             
         }
     }

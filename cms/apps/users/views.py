@@ -1,15 +1,14 @@
-from django.shortcuts import render
 from django_redis import get_redis_connection
 from rest_framework import mixins
 from rest_framework.exceptions import ValidationError
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from users import serializers
-from users.models import User
+from users.models import User, Address
 
 
 class UsernameCountView(APIView):
@@ -53,7 +52,8 @@ class UserView(CreateAPIView):
     serializer_class = serializers.CreateUserSerializer
 
 
-class AddressView(mixins.CreateModelMixin, mixins.ListModelMixin, GenericViewSet):
+class AddressView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin,
+                  GenericViewSet):
     """用户地址管理"""
     serializer_class = serializers.UserAddressSerializer
     permission_classes = [IsAuthenticated]

@@ -25,12 +25,25 @@ var vm = new Vue({
         // 获取商品详情数据
         get_goods_detail: function(id) {
 			//发送请求
-            
+            axios.get(this.host + '/goods/detail/' + id + '/')
+                .then(response =>{
+                    this.goods = response.data;
+                })
+                .catch(error =>{
+                    console.log(error)
+                })
         },
 
         // 获取推荐商品
         get_recommend_goods: function () {
 			//发送请求
+            axios.get('http://127.0.0.1:8000/goods/recommend/')
+                .then(response => {
+                    this.recommend_goods = response.data;
+                })
+                .catch(error =>{
+                    console.log(error)
+                })
             
         },
 

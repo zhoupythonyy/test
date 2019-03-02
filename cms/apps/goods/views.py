@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,7 +39,7 @@ class GoodsListView(ListAPIView):
     queryset = Goods.objects.filter(status=0)
 
     # 配置排序和过滤的管理类
-    filter_backends = (OrderingFilter, DjangoFilterBackend)
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ('create_time', 'sell_price', 'sales')	   # 排序字段
     filter_fields = ('category', )  # 过滤字段
 
@@ -65,3 +66,21 @@ class CategoryView(GenericAPIView):
             category = serializers.CategorySerializer(cate).data
             category['parent'] = serializers.CategorySerializer(cate.parent).data
         return Response(category)
+
+
+class DetailView(APIView):
+    """商品详情"""
+    def get(self, request, goods_id):
+        try:
+            goods = Goods.objects.get(id=goods_id)
+        except Goods.DoesNotExist:
+            raise ValidationError("商品不存在")
+        goodsalbum_set = goods.goodsalbum_set.all()
+        goods = serializers.GoodsSerializers(goods).data
+
+        category = serializers.SCategorySer(GoodsCategory.objects.get(id=goods['category'])).data
+        category['parent'] = serializers.SCategorySer(GoodsCategory.objects.get(id=goods['category']).parent).data
+        goods['category'] = category
+        goods['goodsalbum_set'] = serializers.GoodsAlbumSer(goodsalbum_set, many=True).data
+        return Response(goods)
+

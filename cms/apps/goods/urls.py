@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'goods/categories/$', views.CategoriesView.as_view()),
     url(r'goods/category/$', views.GoodsListView.as_view()),
     url(r'goods/category/(?P<pk>\d+)/$', views.CategoryView.as_view()),
+    url(r'goods/detail/(?P<goods_id>\d+)/$', views.DetailView.as_view()),
 ]

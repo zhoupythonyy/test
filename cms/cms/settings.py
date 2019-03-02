@@ -182,8 +182,8 @@ REST_FRAMEWORK = {
     # 配置项目支持的认证方式
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
-        'rest_framework.authentication.SessionAuthentication',			 # 管理后台使用
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',			 # 管理后台使用
+        # 'rest_framework.authentication.BasicAuthentication',
 
     ),
 
