@@ -43,6 +43,23 @@ class GoodsListView(ListAPIView):
     ordering_fields = ('create_time', 'sell_price', 'sales')	   # 排序字段
     filter_fields = ('category', )  # 过滤字段
 
+    def list(self, request, *args, **kwargs):
+        category_id = request.query_params['category']
+        try:
+            cate = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
+            raise ValidationError("分类不存在")
+        if cate.parent_id == 0: # 当前为一级分类
+            # 二级分类
+            s_cate = cate.goodscategory_set.all()
+            ids_list = []
+            for i in s_cate:
+                ids_list.append(i.id)
+            goods = self.get_queryset().filter(category_id__in=ids_list).order_by(request.query_params['ordering'])
+            return Response(self.get_serializer(goods, many=True).data)
+        else:
+            return super().list(request, *args, **kwargs)
+
 
 class CategoryView(GenericAPIView):
     """面包屑导航"""
@@ -50,23 +67,17 @@ class CategoryView(GenericAPIView):
 
     def get(self, request, pk=None):
         cate = self.get_object()
+        category = serializers.CategorySerializer(cate).data
         if cate.parent_id == 0:
             # 当前类别为一级类别
             s_category = cate.goodscategory_set.all()
             id_list = []
             for i in s_category:
                 id_list.append(i.id)
-            goods_list = serializers.GoodsSerializers(Goods.objects.filter(category_id__in=id_list), many=True).data
-            category = serializers.CategorySerializer(cate).data
+
             category['parent'] = 'null'
-
-            category['goods_list'] = goods_list
-
         else:
-            category = serializers.CategorySerializer(cate).data
             category['parent'] = serializers.CategorySerializer(cate.parent).data
-            print(cate.id)
-            category['goods_list'] = serializers.GoodsSerializers(Goods.objects.filter(category_id=cate.id).all(), many=True).data
         return Response(category)
 
 

@@ -43,7 +43,7 @@ var vm = new Vue({
             axios.get('http://127.0.0.1:8000/goods/category/' + category_id)
                 .then(response => {
                     this.category = response.data;
-                    this.goods_list = response.data.goods_list;
+                    // this.goods_list = response.data.goods_list;
                 })
                 .catch(error => {
                     console.log(error)
