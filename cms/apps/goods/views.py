@@ -65,6 +65,8 @@ class CategoryView(GenericAPIView):
         else:
             category = serializers.CategorySerializer(cate).data
             category['parent'] = serializers.CategorySerializer(cate.parent).data
+            print(cate.id)
+            category['goods_list'] = serializers.GoodsSerializers(Goods.objects.filter(category_id=cate.id).all(), many=True).data
         return Response(category)
 
 
