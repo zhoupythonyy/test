@@ -3,7 +3,7 @@ var vm = new Vue({
     data: {
         host: host,
         token: sessionStorage.token || localStorage.token,
-
+        username: sessionStorage.username || localStorage.username,
         addresses: [],      // 当前登录用户的地址列表
         user_id: 0,         // 当前登录用户的id
         default_address_id: '',     // 当前登录用户的默认地址的id

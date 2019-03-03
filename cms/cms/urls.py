@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^', include('areas.urls')),
     url(r'^', include('cart.urls')),
     url(r'^', include('goods.urls')),
-    url(r'^', include('news.urls')),
+    url(r'^news/', include('news.urls')),
     url(r'^users/', include('users.urls')),
 ]

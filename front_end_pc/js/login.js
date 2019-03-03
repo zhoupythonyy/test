@@ -4,7 +4,7 @@ var vm = new Vue({
         host: 'http://127.0.0.1:8000',
         username: '',
         password: '',
-        remember: false,
+        remember: true,
 
         error_username: false,
         error_pwd: false,

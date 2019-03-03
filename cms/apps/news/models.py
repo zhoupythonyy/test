@@ -7,6 +7,7 @@ class NewsCategory(Category):
     """
     新闻二级分类
     """
+
     class Meta(object):
         db_table = 't_news_category'
         verbose_name = '新闻分类'
@@ -21,13 +22,13 @@ class News(BaseModel):
     img_url = models.CharField(max_length=255, verbose_name='图片url')
     tags = models.TextField(verbose_name='标识')
     zhaiyao = models.CharField(max_length=255, verbose_name='摘要')
-    content = models.TextField(verbose_name = '新闻内容')
-    click = models.IntegerField(verbose_name = '点击量')
-    status = models.IntegerField(verbose_name = '是否下线')
-    is_top = models.IntegerField(verbose_name = '是否头条')
-    is_slide = models.IntegerField(verbose_name = '是否轮播新闻')
-    source = models.CharField(verbose_name = '新闻来源', max_length=20)
-    author = models.CharField(verbose_name = '作者', max_length=20)
+    content = models.TextField(verbose_name='新闻内容')
+    click = models.IntegerField(verbose_name='点击量')
+    status = models.IntegerField(verbose_name='是否下线')
+    is_top = models.IntegerField(verbose_name='是否头条')
+    is_slide = models.IntegerField(verbose_name='是否轮播新闻')
+    source = models.CharField(verbose_name='新闻来源', max_length=20)
+    author = models.CharField(verbose_name='作者', max_length=20)
 
     class Meta(object):
         db_table = 't_news'
